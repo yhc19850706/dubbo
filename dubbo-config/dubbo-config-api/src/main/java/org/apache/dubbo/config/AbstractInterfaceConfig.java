@@ -269,6 +269,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
     }
 
 
+    //开启配置中心
     void startConfigCenter() {
         if (configCenter == null) {
             ConfigManager.getInstance().getConfigCenter().ifPresent(cc -> this.configCenter = cc);

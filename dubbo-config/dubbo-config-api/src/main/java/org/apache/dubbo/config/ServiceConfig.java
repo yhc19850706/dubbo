@@ -290,6 +290,20 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         return unexported;
     }
 
+    /**
+     * 检测以及更新配置 即初始化配置时设置的一系列ConfigBean
+     * 为什么更新？
+     * 配置存在多个地方 获取配置的方法Environment.getConfiguration(String prefix, String id)
+     * 1、xml配置--bean初始化值 configBean
+     * 2、-D 属性配置
+     * 3、配置中心-全局配置
+     * 4、配置中心-APP全局的配置
+     * 5、dubbo.properties配置文件
+     *
+     * 配置优先级
+     * 1、子节点覆盖父节点
+     * 2、子节点取父节点
+     */
     public void checkAndUpdateSubConfigs() {
         // Use default configs defined explicitly on global configs
         completeCompoundConfigs();

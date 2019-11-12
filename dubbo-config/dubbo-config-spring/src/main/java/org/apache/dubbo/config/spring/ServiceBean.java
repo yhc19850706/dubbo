@@ -115,6 +115,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         }
     }
 
+    //ServiceBean在实例化后执行该方法为属性赋值；等同在配置文件中同过init-method指定
     @Override
     @SuppressWarnings({"unchecked", "deprecation"})
     public void afterPropertiesSet() throws Exception {
@@ -156,6 +157,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 ApplicationConfig applicationConfig = null;
                 for (ApplicationConfig config : applicationConfigMap.values()) {
                     if (applicationConfig != null) {
+                        //不允许配置多个application
                         throw new IllegalStateException("Duplicate application configs: " + applicationConfig + " and " + config);
                     }
                     applicationConfig = config;
@@ -173,6 +175,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 for (ModuleConfig config : moduleConfigMap.values()) {
                     if (config.isDefault() == null || config.isDefault()) {
                         if (moduleConfig != null) {
+                            //不允许配置多个module
                             throw new IllegalStateException("Duplicate module configs: " + moduleConfig + " and " + config);
                         }
                         moduleConfig = config;
@@ -210,6 +213,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 if (registryConfigs.isEmpty()) {
                     for (RegistryConfig config : registryConfigMap.values()) {
                         if (StringUtils.isEmpty(registryIds) && (config.isDefault() == null || config.isDefault().booleanValue())) {
+                            //注册中心可以配置多个
                             registryConfigs.add(config);
                         }
                     }
@@ -346,6 +350,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         applicationEventPublisher.publishEvent(exportEvent);
     }
 
+    //在Bean生命周期结束前调用destory()方法做一些收尾工作，亦可以使用destory-method。
     @Override
     public void destroy() throws Exception {
         // no need to call unexport() here, see
